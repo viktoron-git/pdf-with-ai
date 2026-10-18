@@ -1,0 +1,47 @@
+<section id="chat-panel" class="chat-panel">
+    <div class="document-bar">
+        <div class="file-icon">
+            PDF
+        </div>
+        <div class="document-info">
+            <strong>{{ filename }}</strong>
+            <p> Document ready </p>
+        </div>
+
+        <form
+         hx-post="/upload"
+        hx-target="#workspace"
+        hx-swap="innerHTML">
+            <button type="submit" class="secondary-btn">New PDF</button>
+        </form>
+    </div>
+    <div id="messages" class="messages">
+        {% if not history %}
+        <div class="message assistant">
+            Your PDF is ready. Ask me anything about it's content.
+        </div>
+        {% endif %}
+
+        {% for item in history %}
+        <div class="message {{ item.role }}"></div>
+        {% endfor %}
+
+        {% if error %}
+        <div class="message assistant error-message">{{ error }}</div>
+        {% endif %}
+
+    </div>
+
+    <form
+    class="chat-form"
+    hx-post="/upload"
+    hx-swap="outerHTML"
+    hx-target="#chat-panel"
+    hx-indicator="#loading">
+
+        <input type="text" name="question" placeholder="Ask a question about your PDF..." autocomplete="off" required>
+        <button type="submit"> Send ↑ </button>
+        <span id="loading" class="htmx-indicator loading"> Thinking...</span>
+    </form>
+
+</section>

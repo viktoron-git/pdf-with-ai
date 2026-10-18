@@ -1,0 +1,4 @@
+Flask
+PyMuPDF
+google-genai
+python-dotenv

@@ -1,0 +1,26 @@
+<section id="upload-panel" class="upload-panel">
+
+    <div class="upload-icon">
+        ↑
+    </div>
+    <h2> Upload your Document </h2>
+    <p> Choose a PDF and start asking questions. </p>
+
+    <form
+    hx-post="/upload"
+    hx-target="#workspace"
+    hx-swap="innerHTML"
+    hx-indicator="#upload-loading"
+    enctype="multipart/form-data"
+    >
+        <input type="file" name="pdf" accept=".pdf,application/pdf" required>
+        <button type="submit"> Upload PDF</button>
+        <p id="upload-loading" class="htmx-indicator loading"> Reading your PDF </p>
+
+    </form>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+</section>
