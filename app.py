@@ -88,7 +88,7 @@ def upload_pdf():
         )
 
 
-app.route("/chat_panel", methods=['POST'])
+@app.route("/chat_panel", methods=['POST'])
 def chat_panel():
     doc_id = session.get("doc_id")
     document = documents.get(doc_id)
@@ -121,7 +121,7 @@ def chat_panel():
     recent_history = history[-6:]
 
     conversation = "\n".join(
-        f"{item["role"].upper()}: {item["content"][:1500]}" for item in recent_history
+        f"{item['role'].upper()}: {item['content'][:1500]}" for item in recent_history
 
     )
 
@@ -163,7 +163,6 @@ def chat_panel():
 
             if not answer:
                 answer = "I couldn't generate an answer. Please try again"
-
                 break
         except errors.APIError as exc:
             status_code = getattr(exc, "code", None)
@@ -181,23 +180,18 @@ def chat_panel():
                     time.sleep(wait_seconds)
                     continue
             app.logger.exception("Gemini API request failed")
-
             if status_code == 429:
                 error_message = (
                     "Gemini quota or rate limit reached. Please wait and try again "
                 )
             elif status_code in (500, 502, 503, 504):
-                error_message = (
-                    "Gemini is temporary unavailable. " 
-                    "Please try again in few minutes."
-                )
+                error_message = ("Gemini is temporary unavailable. Please try again in few minutes."
+                                 )
             elif status_code == 404:
-                error_message = (
-                    f"The model {model} was not found or unavailable to your API key. Please check the Gemini model"
-                )
+                error_message = (f"The model {model} was not found or unavailable to your API key. Please check the Gemini model"
+                                 )
             else:
-                error_message = (
-                    "The AI request failed. Please check your API key, Internet connection or API configuration"
+                error_message = ("The AI request failed. Please check your API key, Internet connection or API configuration"
                 )
         except Exception:
             app.logger.exception("Unexpected error during Gemini request.")
@@ -209,7 +203,7 @@ def chat_panel():
                 error="An unexpected error occurred. Please try again."
             )
 
-        history.extent([
+        history.extend([
             {"role": "user", "content": question},
             {"role": "assistant", "content":answer}
         ])

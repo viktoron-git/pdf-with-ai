@@ -9,7 +9,7 @@
         </div>
 
         <form
-         hx-post="/upload"
+         hx-post="/reset"
         hx-target="#workspace"
         hx-swap="innerHTML">
             <button type="submit" class="secondary-btn">New PDF</button>
@@ -23,7 +23,7 @@
         {% endif %}
 
         {% for item in history %}
-        <div class="message {{ item.role }}"></div>
+        <div class="message {{ item.role }}"> {{ item.content }}</div>
         {% endfor %}
 
         {% if error %}
@@ -34,7 +34,7 @@
 
     <form
     class="chat-form"
-    hx-post="/upload"
+    hx-post="/chat_panel"
     hx-swap="outerHTML"
     hx-target="#chat-panel"
     hx-indicator="#loading">
